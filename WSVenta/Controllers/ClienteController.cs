@@ -13,6 +13,12 @@ namespace WSVenta.Controllers
     [ApiController]
     public class ClienteController : Controller
     {
+        private readonly VentaRealContext _dbContext;
+
+        public ClienteController(VentaRealContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         [HttpGet]
         public IActionResult Get()
         {
@@ -20,12 +26,16 @@ namespace WSVenta.Controllers
             oRespuesta.Exito = 0;
             try
             {
-                using (VentaRealContext db = new VentaRealContext())
-                {
-                    var lst = db.Clientes.ToList();
-                    oRespuesta.Exito = 1;
-                    oRespuesta.Data = lst;
-                }
+                //using (VentaRealContext db = new VentaRealContext())
+                //{
+                //    var lst = db.Clientes.ToList();
+                //    oRespuesta.Exito = 1;
+                //    oRespuesta.Data = lst;
+                //}
+
+                var lst = _dbContext.Clientes.ToList();
+                oRespuesta.Exito = 1;
+                oRespuesta.Data = lst;
 
             }
             catch (Exception ex)
@@ -44,14 +54,23 @@ namespace WSVenta.Controllers
 
             try
             {
-                using (VentaRealContext db = new VentaRealContext())
-                {
-                    Cliente oCliente = new Cliente();
+                //using (VentaRealContext db = new VentaRealContext())
+                //{
+                //    Cliente oCliente = new Cliente();
+                //    oCliente.Nombre = oModel.Nombre;
+                //    db.Clientes.Add(oCliente);
+                //    db.SaveChanges();
+                //    oRespuesta.Exito = 1;
+                //}
+
+            
+                    var oCliente = new Cliente();
                     oCliente.Nombre = oModel.Nombre;
-                    db.Clientes.Add(oCliente);
-                    db.SaveChanges();
+                    _dbContext.Clientes.Add(oCliente);
+                    _dbContext.SaveChanges();
                     oRespuesta.Exito = 1;
-                }
+                
+
             }
             catch (Exception ex)
             {
