@@ -26,14 +26,8 @@ namespace WSVenta.Controllers
             oRespuesta.Exito = 0;
             try
             {
-                //using (VentaRealContext db = new VentaRealContext())
-                //{
-                //    var lst = db.Clientes.ToList();
-                //    oRespuesta.Exito = 1;
-                //    oRespuesta.Data = lst;
-                //}
 
-                var lst = _dbContext.Clientes.ToList();
+                var lst = _dbContext.Clientes.OrderByDescending(d=>d.Id).ToList();
                 oRespuesta.Exito = 1;
                 oRespuesta.Data = lst;
 
@@ -54,23 +48,12 @@ namespace WSVenta.Controllers
 
             try
             {
-                //using (VentaRealContext db = new VentaRealContext())
-                //{
-                //    Cliente oCliente = new Cliente();
-                //    oCliente.Nombre = oModel.Nombre;
-                //    db.Clientes.Add(oCliente);
-                //    db.SaveChanges();
-                //    oRespuesta.Exito = 1;
-                //}
-
-            
                     var oCliente = new Cliente();
                     oCliente.Nombre = oModel.Nombre;
                     _dbContext.Clientes.Add(oCliente);
                     _dbContext.SaveChanges();
                     oRespuesta.Exito = 1;
-                
-
+               
             }
             catch (Exception ex)
             {
@@ -85,16 +68,15 @@ namespace WSVenta.Controllers
         {
             Respuesta oRespuesta = new Respuesta();
 
+            
+
             try
             {
-                using (VentaRealContext db = new VentaRealContext())
-                {
-                    Cliente oCliente = db.Clientes.Find(oModel.Id);
-                    oCliente.Nombre = oModel.Nombre;
-                    db.Entry(oCliente).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    db.SaveChanges();
-                    oRespuesta.Exito = 1;
-                }
+                var oCliente = _dbContext.Clientes.Find(oModel.Id);
+                oCliente.Nombre = oModel.Nombre;
+                _dbContext.Entry(oCliente).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _dbContext.SaveChanges();
+                oRespuesta.Exito = 1;
             }
             catch (Exception ex)
             {
