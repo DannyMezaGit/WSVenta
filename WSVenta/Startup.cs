@@ -34,6 +34,8 @@ namespace WSVenta
                 options.AddPolicy(name: MiCors,
                                   builder =>
                                   {
+                                      builder.WithMethods("*");
+                                      builder.WithHeaders("*");
                                       builder.WithOrigins("*");
                                   });
             });
