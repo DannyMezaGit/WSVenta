@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using WSVenta.models;
 
 #nullable disable
 
-namespace WSVenta.models
+namespace WSVenta.Models
 {
     public partial class Cliente
     {

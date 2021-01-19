@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace WSVenta.models
+namespace WSVenta.Models
 {
     public partial class Producto
     {
