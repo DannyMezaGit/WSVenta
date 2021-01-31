@@ -68,6 +68,7 @@ namespace WSVenta
                 });
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IVentaService, VentaService>();
 
             services.AddSwaggerGen(c =>
             {

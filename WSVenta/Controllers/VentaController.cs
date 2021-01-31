@@ -10,6 +10,7 @@ using WSVenta.models;
 using WSVenta.Models;
 using WSVenta.Models.Request;
 using WSVenta.Models.Response;
+using WSVenta.Services;
 
 namespace WSVenta.Controllers
 {
@@ -19,46 +20,26 @@ namespace WSVenta.Controllers
     public class VentaController : ControllerBase
     {
         private readonly VentaRealContext _dbContext;
+        private IVentaService _ventaService;
 
-        public VentaController(VentaRealContext dbContext)
+        public VentaController(VentaRealContext dbContext, IVentaService venta)
         {
             _dbContext = dbContext;
+            _ventaService = venta;
         }
 
         public IActionResult Add(VentaRequest model)
         {
             Respuesta respuesta = new Respuesta();
 
-                var transaction = _dbContext.Database.BeginTransaction();
             try
             {
-
-                var venta = new Venta();
-                venta.Total = model.Conceptos.Sum(d => d.Cantidad * d.PrecioUnitario);
-                venta.Fecha = DateTime.Now;
-                venta.IdCliente = model.IdCliente;
-
-                _dbContext.Venta.Add(venta);
-                _dbContext.SaveChanges();
-
-                foreach (var modelconcepto in model.Conceptos)
-                {
-                    var concepto = new Models.Concepto();
-                    concepto.Cantidad = modelconcepto.Cantidad;
-                    concepto.IdProducto = modelconcepto.IdProducto;
-                    concepto.PrecioUnitario = modelconcepto.PrecioUnitario;
-                    concepto.Importe = modelconcepto.Importe;
-                    concepto.IdVenta = venta.Id;
-                    _dbContext.Conceptos.Add(concepto);
-                    _dbContext.SaveChanges();
-                }
-
-                transaction.Commit();
+                _ventaService.Add(model);
                 respuesta.Exito = 1;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                transaction.Rollback();
+
                 respuesta.Mensaje = ex.Message;
             }
 
