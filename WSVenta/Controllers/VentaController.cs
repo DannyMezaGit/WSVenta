@@ -35,7 +35,7 @@ namespace WSVenta.Controllers
             try
             {
                 _ventaService.Add(model);
-                respuesta.Exito = 1;
+                respuesta.Exito = 1 ;
             }
             catch (Exception ex)
             {
