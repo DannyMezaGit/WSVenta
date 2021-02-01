@@ -12,6 +12,7 @@ using WSVenta.models;
 using WSVenta.Models;
 using WSVenta.Models.Common;
 using WSVenta.Services;
+using WSVenta.Tools;
 
 namespace WSVenta
 {
@@ -41,7 +42,13 @@ namespace WSVenta
             services.AddDbContext<VentaRealContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new IntToStringConverter());
+                    options.JsonSerializerOptions.Converters.Add(new DecimalToStringConverter());
+                });
+
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
